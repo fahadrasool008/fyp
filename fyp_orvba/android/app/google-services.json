@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "688802085513",
+    "project_id": "persuasive-feat-415112",
+    "storage_bucket": "persuasive-feat-415112.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:688802085513:android:617cd4533cc94f79c16458",
+        "android_client_info": {
+          "package_name": "com.example.fyp_orvba"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcHMX8hyVJpgBWhe__zIdb9rW568HZbgQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
