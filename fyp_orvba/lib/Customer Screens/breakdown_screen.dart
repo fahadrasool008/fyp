@@ -15,9 +15,9 @@ class BreakdownModel{
   BreakdownModel({required this.title, required this.path, this.checked = false, this.key =""});
 }
 class BreakdownScreen extends StatefulWidget {
-  VehicleModel? vehicleType,vehicleCategory,vehicleMode;
+  VehicleModel? vehicleType,vehicleMode;
   LatLng? latLng;
-   BreakdownScreen({super.key, this.vehicleType, this.vehicleCategory, this.vehicleMode, this.latLng});
+   BreakdownScreen({super.key, this.vehicleType, this.vehicleMode, this.latLng});
 
   @override
   State<BreakdownScreen> createState() => _BreakdownScreenState();
@@ -50,7 +50,6 @@ class _BreakdownScreenState extends State<BreakdownScreen> {
     // TODO: implement initState
     super.initState();
     print(widget.vehicleType!.checked.toString());
-    print(widget.vehicleCategory!.path);
     print(widget.vehicleMode!.title);
   }
 
@@ -71,7 +70,7 @@ class _BreakdownScreenState extends State<BreakdownScreen> {
               onTap: (){
                 setState(() {
                   titleAndPathList[index].checked = true;
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=> SearchResults(vehicleMode: widget.vehicleMode,vehicleCategory: widget.vehicleCategory,vehicleType: widget.vehicleType,breakDownItem: titleAndPathList[index],latLng: widget.latLng,)));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> SearchResults(vehicleMode: widget.vehicleMode,vehicleType: widget.vehicleType,breakDownItem: titleAndPathList[index],latLng: widget.latLng,)));
                 });
               },
               child: BreakDownContainer(title: titleAndPathList[index].title,path: titleAndPathList[index].path,)));

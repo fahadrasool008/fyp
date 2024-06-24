@@ -56,6 +56,20 @@ class _LocationDetailsState extends State<LocationDetails> {
     });
   }
 
+
+  Set<Marker> _createMarker() {
+    return <Marker>[
+      Marker(
+        markerId: MarkerId('marker1'),
+        position: _center,
+        infoWindow: InfoWindow(
+          title: 'Marker Title',
+          snippet: 'Marker Snippet',
+        ),
+        icon: BitmapDescriptor.defaultMarker,
+      ),
+    ].toSet();
+  }
   @override
   void initState() {
     // TODO: implement initState
@@ -72,8 +86,9 @@ class _LocationDetailsState extends State<LocationDetails> {
           onMapCreated: _onMapCreated,
           initialCameraPosition: CameraPosition(
             target: _center,
-            zoom: 11.0,
+            zoom: 16.0,
           ),
+          markers: _createMarker(),
         ),
         if (widget.isCustomer == false)
           Align(

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -82,14 +84,16 @@ class CustomGradientProgressBar extends StatelessWidget {
 class CustomTextField extends StatelessWidget {
   TextEditingController? controller = TextEditingController();
   TextInputType keyoardType;
-
-  CustomTextField({super.key,  this.controller, this.keyoardType = TextInputType.text});
+  VoidCallback? onChanges;
+  String hint;
+  bool shadow;
+  CustomTextField({super.key,  this.controller, this.keyoardType = TextInputType.text,this.hint = "",this.shadow = true, this.onChanges });
 
   @override
   Widget build(BuildContext context) {
     return  Container(
-      decoration: const BoxDecoration(
-          boxShadow: [
+      decoration:  BoxDecoration(
+          boxShadow: shadow==true?[
             BoxShadow(
                 offset: Offset(2, 3),
                 color: Color(0xFFD2C9C9),
@@ -100,15 +104,16 @@ class CustomTextField extends StatelessWidget {
                 color: Color(0xFFD2C9C9),
                 blurRadius: 5
             ),
-          ]
+          ]:[],
       ),
       child:  TextField(
         controller: controller,
         keyboardType: keyoardType,
-        decoration: const InputDecoration(
+        decoration:  InputDecoration(
             fillColor: Colors.white,
             filled: true,
-            border: OutlineInputBorder(
+            hintText: hint,
+            border: const OutlineInputBorder(
                 borderSide: BorderSide.none
             )
         ),

@@ -32,8 +32,10 @@ class _CustomerDashboardState extends State<CustomerDashboard> {
   List<Map<String,dynamic>> customers =[];
   Map<String,dynamic>? currentCustomer;
   bool isLoading = false;
+  bool disabled = false;
+  bool disabledTruck = false;
   List<VehicleModel> vehicleTypeList = [
-    VehicleModel(title: "bike",path: "assets/sportbike.png",checked: false),
+    VehicleModel(title: "bike",path: "assets/sportbike.png",checked: true),
     VehicleModel(title: "car",path: "assets/sedanCar.png",checked: false),
     VehicleModel(title: "truck",path: "assets/cargo-truck.png",checked: false),
   ];
@@ -43,16 +45,14 @@ class _CustomerDashboardState extends State<CustomerDashboard> {
     VehicleModel(title: "electric",path: "",checked: false),
   ];
   List<VehicleModel> vehicleCategoryList = [
-    VehicleModel(title: "mehran",path: "assets/sedan.png",checked: false),
-    VehicleModel(title: "yaris",path: "assets/sedan.png",checked: false),
-    VehicleModel(title: "suv",path: "assets/sedan.png",checked: false),
-    VehicleModel(title: "prado",path: "assets/sedan.png",checked: false),
-    VehicleModel(title: "landcruiser",path: "assets/sedan.png",checked: false),
-    VehicleModel(title: "swift",path: "assets/sedan.png",checked: false),
-    VehicleModel(title: "cultus",path: "assets/sedan.png",checked: false),
-    VehicleModel(title: "fortuner",path: "assets/sedan.png",checked: false),
-    VehicleModel(title: "hondacity",path: "assets/sedan.png",checked: false),
-    VehicleModel(title: "other",path: "assets/sedan.png",checked: false),
+    VehicleModel(title: "Automatic Cars",path: "assets/sedan.png",checked: false),
+    VehicleModel(title: "Family Cars",path: "assets/sedan.png",checked: false),
+    VehicleModel(title: "5 Seater",path: "assets/sedan.png",checked: false),
+    VehicleModel(title: "Small Cars",path: "assets/sedan.png",checked: false),
+    VehicleModel(title: "Big Cars",path: "assets/sedan.png",checked: false),
+    VehicleModel(title: "4 Door",path: "assets/sedan.png",checked: false),
+    VehicleModel(title: "Old Cars",path: "assets/sedan.png",checked: false),
+    VehicleModel(title: "Others",path: "assets/sedan.png",checked: false),
   ];
 
   resetSelected(List<VehicleModel> list){
@@ -60,6 +60,7 @@ class _CustomerDashboardState extends State<CustomerDashboard> {
       list[i].checked = false;
     }
   }
+
   int checkSelected(List<VehicleModel> list){
     for(int i=0; i<list.length; i++){
       if(list[i].checked == true)
@@ -156,6 +157,9 @@ class _CustomerDashboardState extends State<CustomerDashboard> {
     super.initState();
     RefineData();
     _determinePosition();
+    if(vehicleTypeList[1].checked == false){
+        disabled = true;
+    }
   }
   @override
   Widget build(BuildContext context) {
@@ -269,9 +273,19 @@ class _CustomerDashboardState extends State<CustomerDashboard> {
                               setState(() {
                                 resetSelected(vehicleTypeList);
                                 vehicleTypeList[index].checked = true;
+                                if(vehicleTypeList[1].checked == true){
+                                  setState(() {
+                                    disabled = false;
+                                  });
+                                }
+                                else{
+                                  setState(() {
+                                    disabled = true;
+                                  });
+                                }
                               });
                             },
-                            child: CategoryContainer(title: vehicleTypeList[index].title, selected: vehicleTypeList[index].checked,path: vehicleTypeList[index].path,)),
+                            child: CategoryContainer(title: vehicleTypeList[index].title, selected: vehicleTypeList[index].checked,path: vehicleTypeList[index].path)),
                       );
                     }),
               ),
@@ -281,7 +295,7 @@ class _CustomerDashboardState extends State<CustomerDashboard> {
                 style: bold14Black,
               ),
               const Gap( 5),
-              SizedBox(
+                SizedBox(
                 height: 120,
                 child: ListView.builder(
                     shrinkWrap: true,
@@ -292,13 +306,13 @@ class _CustomerDashboardState extends State<CustomerDashboard> {
                       return  Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: GestureDetector(
-                            onTap: (){
+                            onTap: disabled == true? (){} :(){
                               setState(() {
                                 resetSelected(vehicleCategoryList);
                                 vehicleCategoryList[index].checked = true;
                               });
                             },
-                            child: CategoryContainer(title: item.title,path: item.path,selected: item.checked,)),
+                            child: CategoryContainer(title: item.title,path: item.path,selected: item.checked, disabled:  disabled,)),
                       );
                     }),
               ),
@@ -311,7 +325,7 @@ class _CustomerDashboardState extends State<CustomerDashboard> {
               SizedBox(
                 height: MediaQuery.of(context).size.height*0.18,
                 child: ListView.builder(
-                    itemCount: 3,
+                    itemCount: vehicleTypeList[2].checked?1:3,
                     itemBuilder: (context,index){
                   return GestureDetector(
                       onTap: (){
@@ -320,7 +334,7 @@ class _CustomerDashboardState extends State<CustomerDashboard> {
                           vehicleModeList[index].checked = true;
                         });
                       },
-                      child: ModeContainer(title: vehicleModeList[index].title,  checked: vehicleModeList[index].checked,));
+                      child: ModeContainer(title: vehicleModeList[index].title,  checked: vehicleModeList[index].checked ));
                 }),
               ),
               const Gap( 20),
@@ -330,13 +344,30 @@ class _CustomerDashboardState extends State<CustomerDashboard> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 140.0),
                     child: RoundedButton(title: "Next", onPressed: (){
-                      if(checkSelectedbool(vehicleTypeList)  && checkSelectedbool(vehicleCategoryList)  && checkSelectedbool(vehicleModeList) )
+                      if(checkSelectedbool(vehicleTypeList)  && checkSelectedbool(vehicleModeList) )
                       {
-                        int one = checkSelected(vehicleTypeList);
-                        int two = checkSelected(vehicleCategoryList);
-                        int three = checkSelected(vehicleModeList);
+                        if(vehicleTypeList[1].checked ){
+                          if(checkSelectedbool(vehicleCategoryList)){
+                            int one = checkSelected(vehicleTypeList);
+                            int three = checkSelected(vehicleModeList);
 
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> BreakdownScreen(vehicleType: vehicleTypeList[one],vehicleCategory: vehicleCategoryList[two],vehicleMode: vehicleModeList[three],latLng: currentLocation,)));
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=> BreakdownScreen(vehicleType: vehicleTypeList[one],vehicleMode: vehicleModeList[three],latLng: currentLocation,)));
+                          }else{
+                            ScaffoldMessenger.of(context).showSnackBar( SnackBar(
+                                width: MediaQuery.of(context).size.width*0.9,
+                                behavior: SnackBarBehavior.floating,
+                                duration: const Duration(milliseconds: 400),
+                                backgroundColor:const Color(0xff3F54BE),
+                                content: Text("Please select all fields",style: bold13White,)));
+                          }
+                        }
+                        else{
+                          int one = checkSelected(vehicleTypeList);
+                          int three = checkSelected(vehicleModeList);
+
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=> BreakdownScreen(vehicleType: vehicleTypeList[one],vehicleMode: vehicleModeList[three],latLng: currentLocation,)));
+                        }
+
                       }else{
                         ScaffoldMessenger.of(context).showSnackBar( SnackBar(
                             width: MediaQuery.of(context).size.width*0.9,

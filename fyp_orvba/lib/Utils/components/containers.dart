@@ -7,7 +7,8 @@ import '../styles/textStyles.dart';
 class ModeContainer extends StatelessWidget {
   final String title;
   bool checked;
-  ModeContainer({super.key , required this.title, this.checked = false});
+  bool disabledTruck;
+  ModeContainer({super.key , required this.title, this.checked = false,  this.disabledTruck = false});
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +18,9 @@ class ModeContainer extends StatelessWidget {
         width: double.infinity,
         height: 40,
         decoration: BoxDecoration(
-          color: checked? const Color(0xff3F54BE):Color(0xffECEFF8),
+          color:   checked? const Color(0xff3F54BE): Color(0xffECEFF8),
           borderRadius: BorderRadius.circular(5),
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(offset: Offset(2, 3), blurRadius: 5, spreadRadius: -3 ,color: Color(0xffB6B4B4FF)),
             ]
         ),
@@ -33,11 +34,12 @@ class CategoryContainer extends StatelessWidget {
   bool selected;
   String path, title;
   double width;
-  CategoryContainer({super.key, this.selected = false, this.path ="", this.title = "", this.width = 60});
+  bool disabled;
+  CategoryContainer({super.key, this.selected = false, this.path ="", this.title = "", this.width = 60, this.disabled = false});
 
   selectItem(){
     if(selected == true){
-      return Padding(
+      return const Padding(
         padding: const EdgeInsets.all(4.0),
         child: Icon(Icons.check_circle, color: Colors.green, size: 30,),
       );
@@ -70,8 +72,17 @@ class CategoryContainer extends StatelessWidget {
             ],
           ),
         ),
-        selectItem(),
-
+        if(disabled == true)
+        Container(
+          width: 120,
+          height: 120,
+          decoration: const BoxDecoration(
+            color: Color.fromARGB(50,0,0,0),
+          ),
+          child: Center(child: Text(""),),
+        ),
+        if(disabled == false)
+          selectItem(),
 
       ],
     );
